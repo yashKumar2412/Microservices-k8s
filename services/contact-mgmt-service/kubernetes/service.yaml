@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: contact-mgmt-service
+  namespace: contact-management
+spec:
+  selector:
+    app: contact-mgmt-app
+  ports:
+    - protocol: TCP
+      port: 5001
+      targetPort: 5001
+  type: ClusterIP

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contact-mgmt-service
+  namespace: contact-management
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: contact-mgmt-service
+  template:
+    metadata:
+      labels:
+        app: contact-mgmt-service
+    spec:
+      containers:
+      - name: contact-mgmt-service
+        image: contact-mgmt-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5001
