@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Contact</h2>
+<form id="edit-contact-form" method="POST">
+    <input type="hidden" id="contact-id" name="contact_id" value="{{ contact.id }}">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ contact.name }}" required><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ contact.email }}" required><br>
+
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" value="{{ contact.phone }}" required><br>
+
+    <button type="submit">Update Contact</button>
+</form>
+
+<script>
+    document.getElementById('edit-contact-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const contactId = document.getElementById('contact-id').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+
+        const response = await fetch(`/api/edit_contact/${contactId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, phone, email }),
+        });
+
+        if (response.ok) {
+            alert('Contact updated successfully!');
+            window.location.href = '/';  // Redirect to index
+        } else {
+            alert('Failed to update contact.');
+        }
+    });
+</script>
+{% endblock %}

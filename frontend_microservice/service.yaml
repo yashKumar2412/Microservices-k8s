@@ -1,11 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: routing-service
-  namespace: contact-management
+  name: frontend-service
 spec:
   selector:
-    app: routing-service
+    app: frontend
   ports:
     - protocol: TCP
       port: 5000

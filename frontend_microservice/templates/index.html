@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Contact List</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="contact-list">
+        <!-- Dynamic rows will be added here -->
+    </tbody>
+</table>
+
+<script>
+    // Fetch all contacts from the backend
+    async function loadContacts() {
+        const response = await fetch('/api/contacts');
+        if (response.ok) {
+            const contacts = await response.json();
+            const tableBody = document.getElementById('contact-list');
+            tableBody.innerHTML = contacts.map(contact => `
+                <tr>
+                    <td>${contact[1]}</td>
+                    <td>${contact[2]}</td>
+                    <td>${contact[3]}</td>
+                    <td>
+                        <a href="/edit_contact?id=${contact[0]}">Edit</a>
+                        <button onclick="deleteContact(${contact[0]})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        } else {
+            alert('Failed to load contacts.');
+        }
+    }
+
+    // Delete a contact
+    async function deleteContact(contactId) {
+        const response = await fetch(`/api/delete_contact/${contactId}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            alert('Contact deleted successfully!');
+            loadContacts(); // Refresh the list
+        } else {
+            alert('Failed to delete contact.');
+        }
+    }
+
+    // Load contacts on page load
+    loadContacts();
+</script>
+{% endblock %}
